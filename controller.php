@@ -78,28 +78,28 @@ function loadContent($user)
 if (isset($_FILES['file']['name'])) {
 
 
-    //Отделяем расширение файла от имени
+
     $type = explode('.', $_FILES['file']['name'])[1];
-    //Проверка размера и расширения файла
+
     if (($_FILES['file']['size'] < 10 * 1024 * 1024) && ($type != 'exe') && ($type != 'sh')) {
-        $user->uploadFile($_FILES['file']); //Загржаем файл на диск
+        $user->uploadFile($_FILES['file']);
         $_SESSION['message'] = "Файл загружен";
     } else {
         $_SESSION['message'] = "В загрузке отказано";
     }
-    loadContent($user); //Возвращаем разметку
+    loadContent($user);
 }
-if (isset($_POST['delete'])) { //Этот параметр приходит из JS 
+if (isset($_POST['delete'])) {
     $user->delete($_POST['delete']);
-    loadContent($user); //Возвращаем разметку
+    loadContent($user);
 }
-if (isset($_GET['download'])) { //пользователь перешел на страницу с эти параметром
+if (isset($_GET['download'])) {
     $arrFromName = explode('/', $_GET['download']);
-    $fileOnServer = $user->downloadToServer($_GET['download'], end($arrFromName)); //Скачеваем файл на сервер и получаем его расположение на сервере
-    $user->loadFromServer($fileOnServer); //Скачиваем файл с сервера
-    header("Location: index.php"); //Редиректим пользователья, а не возвращяем разметку, т.к. мы изменяли заголовки при скачивании файла
+    $fileOnServer = $user->downloadToServer($_GET['download'], end($arrFromName));
+    $user->loadFromServer($fileOnServer);
+    header("Location: index.php");
 }
-if (isset($_POST['rename'])) { //Этот параметр приходит из JS 
+if (isset($_POST['rename'])) {
     $user->rename($_POST['rename'], $_POST['newname']);
-    loadContent($user); //Возвращаем разметку
+    loadContent($user);
 }
